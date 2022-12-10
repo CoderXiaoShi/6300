@@ -1,0 +1,15 @@
+*{
+  margin: 0;
+  padding: 0;
+  transform-style: preserve-3d;
+}
+.center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#app{
+  perspective: 1200px;
+  background: transparent;
+  -webkit-user-select: none;
+}

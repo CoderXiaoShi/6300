@@ -1,0 +1,99 @@
+
+@phone-screen-width: 190px;
+@phone-screen-height: 340px;
+
+.screen{
+  width: @phone-screen-width;
+  height: @phone-screen-height;
+  background: #ccc;
+  box-shadow: 3px 4px 4px 3px #8c8c8c, -7px -3px 6px 0px #fff;
+  border-radius: 10px;
+  margin: 0 auto;
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  -webkit-app-region: no-drag;
+  .screen-panel{
+    color: red;
+    background: #000;
+    display: flex;
+    width: @phone-screen-width;
+    height: @phone-screen-height;
+    flex-direction: column;
+    .head{
+      height: 55px;
+      flex-direction: column;
+      p{
+        font-size: 12px;
+        font-weight: bold;
+        margin-top: 5px;
+        background-image: linear-gradient(to bottom, #eee, #666);
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+      .receiver{
+        width: 40px;
+        height: 6px;
+        overflow: hidden;
+        border-top: 2px solid #3c3c3c;
+        box-sizing: border-box;
+        background: #fff;
+        background-image: linear-gradient(
+          #fff 10%, #333 20%, 
+          #fff 30%, #333 40%,
+          #fff 50%, #333 60%,
+          #fff 70%, #333 40%,
+          #fff 80%, #333 70%,
+          #fff 90%, #333 100%,
+        );
+        border-radius: 3px;
+        margin-bottom: 4px;
+        position: relative;
+        &::after{
+          content: '';
+          display: flex;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 40px;
+          height: 6px;
+          // background-image: linear-gradient(
+          //   to right, 
+          //   transparent 5%, #333 5%,
+          //   transparent 15%, #333 15%,
+          //   transparent 25%, #333 25%,
+          //   transparent 35%, #333 35%,
+          //   transparent 45%, #333 45%,
+          //   transparent 55%, #333 55%,
+          //   transparent 65%, #333 65%,
+          //   transparent 75%, #333 75%,
+          // );
+            // to right, transparent 30%, #333 40%,
+            // to right, transparent 50%, #333 60%,
+            // to right, transparent 70%, #333 40%,
+            // to right, transparent 80%, #333 70%,
+            // to right, transparent 90%, #333 100%,
+          // background: red;
+        }
+      }
+    }
+    .layout{
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      padding: 0 10px;
+      .screen-view{
+        background: #ccc;
+        border-radius: 5px;
+        flex: 1;
+      }
+    }
+    .keyboard{
+      height: 80px;
+    }
+  }
+}
+// 程序员小石
+// NOKIA
