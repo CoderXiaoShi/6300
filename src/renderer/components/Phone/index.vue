@@ -42,12 +42,29 @@ onMounted(() => {
 const pointerDown = (e: PointerEvent) => {
   e.stopPropagation();
   e.preventDefault();
+  document.body.setPointerCapture(e.pointerId)
+  const oldStyle = {x: 0, y: 0}
+  let transform = phoneDom.value.style.transform
+  if (transform) {
+    let arr = transform.match(/\d+/g)
+    console.log(arr);
+    oldStyle.x = parseInt(arr[0])
+    oldStyle.y = parseInt(arr[2])
+  }
+
+  const startY = e.clientY - oldStyle.y
+  const startX = e.clientX - oldStyle.x
 
   const pointerMove = (e: PointerEvent) => {
 
+    const y = startY - e.clientY
+    const x = e.clientX - startX
+    phoneDom.value.style.transform = 'rotateY('+x+'deg) rotateX('+y+'deg)'
   }
   const pointerUp = (e: PointerEvent) => {
-
+    document.removeEventListener('pointermove', pointerMove)
+    document.removeEventListener('pointerup', pointerUp)
+    document.body.releasePointerCapture(e.pointerId)
   }
   document.addEventListener('pointermove', pointerMove);
   document.addEventListener('pointerup', pointerUp);
