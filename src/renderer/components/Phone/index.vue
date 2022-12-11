@@ -83,8 +83,18 @@ document.addEventListener('pointerdown', pointerDown);
     <div class="box">
       <div class="top"></div>
       <div class="left"></div>
-      <div class="right"></div>
-      <div class="bottom"></div>
+      <div class="right">
+        <div class="volume">
+          <span>+</span>
+          <span>-</span>
+        </div>
+      </div>
+      <div class="bottom">
+        <div class="bottom-header">
+        </div>
+        <div class="bottom-footer">
+        </div>
+      </div>
       <div class="head"></div>
       <div class="footer"></div>
     </div>

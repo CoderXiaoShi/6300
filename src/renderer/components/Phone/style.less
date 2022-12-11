@@ -26,7 +26,6 @@
     top: 0;
     left: 0;
     transform-style: preserve-3d;
-
     .top{
       width: @phone-width;
       height: @phone-height;
@@ -43,8 +42,14 @@
       height: @phone-height;
       border-radius: 10px;
       position: absolute;
+      overflow: hidden;
       top: 0;
       left: 0;
+      .bottom-footer{
+        background: linear-gradient(121deg, #f4f4f4 0%, #c4c4c4 100%);
+        width: @phone-width;
+        height: calc(@phone-height * 0.65);
+      }
     }
     .left{
       position: absolute;
@@ -67,7 +72,7 @@
         width: 40px;
         height: 10px;
         background: #f4f4f4;
-        transform: translate(0, -10px) rotateX(-20deg) translateZ(1px);
+        transform: translate(0, -9px) rotateX(-20deg) translateZ(-1px);
         transform-origin: bottom;
       }
       &::before{
@@ -110,6 +115,23 @@
         background: #c4c4c4;
         transform: translate(0, 7px) rotateX(-20deg) translateZ(-1px);
         transform-origin: left;
+      }
+      .volume{
+        display: block;
+        width: 10px;
+        height: 80px;
+        background: #000;
+        position: absolute;
+        top: 55px;
+        left: 15px;
+        color: #fff;
+        border-radius: 3px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px;
+        box-sizing: border-box;
       }
     }
     .footer{
