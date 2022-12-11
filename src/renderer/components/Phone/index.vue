@@ -56,10 +56,9 @@ const pointerDown = (e: PointerEvent) => {
   const startX = e.clientX - oldStyle.x
 
   const pointerMove = (e: PointerEvent) => {
-
-    const y = startY - e.clientY
-    const x = e.clientX - startX
-    phoneDom.value.style.transform = 'rotateY('+x+'deg) rotateX('+y+'deg)'
+    const x = startY - e.clientY; // Y 轴拖动, 翻转 X 轴
+    const y = e.clientX - startX; // X 轴拖动, 翻转 Y 轴
+    phoneDom.value.style.transform = 'rotateY('+y+'deg) rotateX('+x+'deg)'
   }
   const pointerUp = (e: PointerEvent) => {
     document.removeEventListener('pointermove', pointerMove)

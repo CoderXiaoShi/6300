@@ -14,5 +14,5 @@ app.on('ready', () => {
   });
   // mainWindow.loadURL(process.argv[2]);
   mainWindow.loadURL('http://localhost:5173/')
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 });
