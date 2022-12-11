@@ -82,6 +82,11 @@ document.addEventListener('pointerdown', pointerDown);
     <!-- 手机的主体部分 -->
     <div class="box">
       <div class="top"></div>
+      <div class="left"></div>
+      <div class="right"></div>
+      <div class="bottom"></div>
+      <div class="head"></div>
+      <div class="footer"></div>
     </div>
   </div>
 </template>

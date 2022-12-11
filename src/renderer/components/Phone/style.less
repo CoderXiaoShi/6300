@@ -7,9 +7,10 @@
   height: @phone-height;
   margin: 0 auto;
   border-radius: 10px;
-  overflow: hidden;
+  transform-style: preserve-3d;
+  // overflow: hidden;
   position: relative;
-  backface-visibility: hidden;
+  // backface-visibility: hidden;
   .container{
     position: absolute;
     z-index: 2;
@@ -17,12 +18,15 @@
     left: 0;
     width: @phone-width;
     height: @phone-height;
+    backface-visibility: hidden;
   }
   .box{
     position: absolute;
     z-index: 1;
     top: 0;
     left: 0;
+    transform-style: preserve-3d;
+
     .top{
       width: @phone-width;
       height: @phone-height;
@@ -30,6 +34,151 @@
       margin: 0 auto;
       border-radius: 10px;
       overflow: hidden;
+      transform: translateZ(-1px);
+    }
+    .bottom{
+      background: #000;
+      transform: translate3d(0px, 0px, -40px);
+      width: @phone-width;
+      height: @phone-height;
+      border-radius: 10px;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .left{
+      position: absolute;
+      top: 10px;
+      left: 0;
+      height: calc(@phone-height - 20px);
+      width: 40px;
+      transform: rotateY(90deg);
+      transform-origin: left;
+      transform-style: preserve-3d;
+      background: linear-gradient(121deg, #f4f4f4 0%, #c4c4c4 100%);
+      &::after, &::before{
+        display: block;
+        content: '';
+        position: absolute;
+        left: 0;
+      }
+      &::after{
+        top: 0;
+        width: 40px;
+        height: 10px;
+        background: #f4f4f4;
+        transform: translate(0, -10px) rotateX(-20deg) translateZ(1px);
+        transform-origin: bottom;
+      }
+      &::before{
+        bottom: 0;
+        width: 40px;
+        height: 10px;
+        background: #c4c4c4;
+        transform-origin: top;
+        transform: translate(0, 7px) rotateX(20deg);
+      }
+    }
+    .right{
+      position: absolute;
+      top: 10px;
+      right: -40px;
+      height: calc(@phone-height - 20px);
+      width: 40px;
+      transform: rotateY(90deg);
+      transform-origin: left;
+      background: linear-gradient(121deg, #f4f4f4 0%, #c4c4c4 100%);
+      transform-style: preserve-3d;
+      &::after, &::before{
+        display: block;
+        content: '';
+        position: absolute;
+        left: 0;
+      }
+      &::after{
+        top: 0;
+        width: 40px;
+        height: 10px;
+        background: #f4f4f4;
+        transform: translate(0, -7px) rotateX(20deg);
+        transform-origin: right;
+      }
+      &::before{
+        bottom: 0;
+        width: 40px;
+        height: 10px;
+        background: #c4c4c4;
+        transform: translate(0, 7px) rotateX(-20deg) translateZ(-1px);
+        transform-origin: left;
+      }
+    }
+    .footer{
+      width: calc(@phone-width - 20px);
+      height: 40px;
+      background: #c4c4c4;
+      transform-style: preserve-3d;
+      transform-origin: bottom;
+      transform: translate(10px, 0) rotateX(90deg);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      &::after, &::before{
+        position: absolute;
+        top: 0;
+        display: block;
+        content: '';
+      }
+      &::after{
+        background: #c4c4c4;
+        width: 10px;
+        left: 0;
+        height: 40px;
+        transform: translate(-9px, -1px) rotateY(25deg) translateZ(2px);
+        transform-origin: bottom;
+      }
+      &::before{
+        background: #c4c4c4;
+        width: 10px;
+        right: 0;
+        height: 40px;
+        transform: translate(9px, -1px) rotateY(-25deg) translateZ(2px);
+        transform-origin: bottom;
+      }
+    }
+    .head{
+      width: calc(@phone-width - 20px);
+      height: 40px;
+      background: #f4f4f4;
+      transform-origin: top;
+      transform: rotateX(270deg) translate(10px, 0px);
+      transform-style: preserve-3d;
+      position: absolute;
+      top: 0;
+      left: 0;
+      &::after{
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        content: '';
+        width: 10px;
+        height: 40px;
+        background: #f4f4f4;
+        transform: translate(-9px, 0px) rotateY(20deg);
+        transform-origin: right;
+      }
+      &::before{
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: block;
+        content: '';
+        width: 10px;
+        height: 40px;
+        background: #f4f4f4;
+        transform: translate(9px, 0px) rotateY(-20deg);
+        transform-origin: left;
+      }
     }
   }
 }
