@@ -1,5 +1,9 @@
 # vue3 + electron 实现 诺基亚 6300
 
+## Demo
+
+![Demo](./demo.jpeg '第一版效果图')
+
 > 0.0.1 版本
 
 - OK git init
