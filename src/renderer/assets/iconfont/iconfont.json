@@ -1,0 +1,16 @@
+{
+  "id": "3820715",
+  "name": "6300",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1256479",
+      "name": "信号",
+      "font_class": "xinhao",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    }
+  ]
+}

@@ -4,5 +4,10 @@ import { devPlugin } from './plugins/devPlugin'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [devPlugin(), vue()]
+  plugins: [devPlugin(), vue()],
+  resolve: {
+    alias: {
+      '@': './src/renderer'
+    }
+  }
 })

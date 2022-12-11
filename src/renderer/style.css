@@ -1,7 +1,6 @@
 *{
   margin: 0;
   padding: 0;
-  transform-style: preserve-3d;
 }
 .center{
   display: flex;
@@ -10,6 +9,8 @@
 }
 #app{
   perspective: 1200px;
+  transform-style: preserve-3d;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   background: transparent;
   -webkit-user-select: none;
 }

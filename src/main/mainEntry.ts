@@ -9,6 +9,7 @@ app.on('ready', () => {
     // height: 520,
     width: 320,
     height: 620,
+    resizable: false,
     frame: false,
   });
   // mainWindow.loadURL(process.argv[2]);

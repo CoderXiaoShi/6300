@@ -7,7 +7,6 @@ import Phone from './components/Phone/index.vue'
 </template>
 
 <style lang="less" scoped>
-@import url('./custom.less');
 </style>
 
 <style scoped>

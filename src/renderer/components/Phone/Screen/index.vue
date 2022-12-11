@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import MenuKeyboard from './MenuKeyboard/index.vue'
+import OpenAnim from '../../OpenAnim/index.vue'
+import { systemStore } from '../../../store/system'
+import { SystemStatus } from '../../../constant/enum'
+import bkg03 from '../../../assets/bkg/3.jpeg'
+
+const store = systemStore()
 
 </script>
 <template>
@@ -11,8 +17,9 @@ import MenuKeyboard from './MenuKeyboard/index.vue'
         <p>程序员小石</p>
       </div>
       <div class="layout">
-        <div class="screen-view">
-          <!-- <router-view /> -->
+        <div class="screen-view" :style="`background: url(${bkg03}); background-size: 100% 100%;`">
+          <OpenAnim v-if="store.data.state === SystemStatus.close" />
+          <router-view v-if="store.data.state === SystemStatus.open" />
         </div>
       </div>
       <div class="keyboard" >
