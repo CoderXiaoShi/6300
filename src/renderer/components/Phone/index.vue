@@ -6,8 +6,6 @@ import Keyboard from './Keyboard/index.vue'
 import { keyboardStore } from '../../store/keyboard'
 import { KeyboardCode } from '../../constant/enum'
 
-// defineProps<{ msg: string }>()
-const count = ref(0)
 const phoneDom = ref()
 
 const router = useRouter()
@@ -17,7 +15,7 @@ const toPage = (v: string) => {
   router.push(v)
 }
 
-const keyboardFnMap = {
+const keyboardFnMap: any = {
   'Enter': () => toPage('/menu'),
   'Escape': () => toPage('/'),
   'ArrowUp': (direction: 'down' | 'up') => keyboardStoreObj.setKeyStatus(KeyboardCode.ArrowUp ,direction),
@@ -30,17 +28,31 @@ onMounted(() => {
   document.addEventListener('keyup', (e) => {
     const { code } = e
     if (code in keyboardFnMap) {
-      keyboardFnMap[code]('up')
+      keyboardFnMap[code]('up');
     }
   })
   document.addEventListener('keydown', (e) => {
     const { code } = e
     if (code in keyboardFnMap) {
-      keyboardFnMap[code]('down')
+      keyboardFnMap[code]('down');
     }
   })
 })
 
+const pointerDown = (e: PointerEvent) => {
+  e.stopPropagation();
+  e.preventDefault();
+
+  const pointerMove = (e: PointerEvent) => {
+
+  }
+  const pointerUp = (e: PointerEvent) => {
+
+  }
+  document.addEventListener('pointermove', pointerMove);
+  document.addEventListener('pointerup', pointerUp);
+}
+document.addEventListener('pointerdown', pointerDown);
 </script>
 
 <template>

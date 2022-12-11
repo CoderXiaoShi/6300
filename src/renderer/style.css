@@ -13,4 +13,8 @@
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   background: transparent;
   -webkit-user-select: none;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

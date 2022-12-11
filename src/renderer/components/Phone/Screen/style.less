@@ -14,7 +14,6 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  -webkit-app-region: no-drag;
   .screen-panel{
     background: #000;
     display: flex;
@@ -24,6 +23,8 @@
     .head{
       height: 55px;
       flex-direction: column;
+      cursor: move;
+      -webkit-app-region: drag;
       p{
         font-size: 12px;
         font-weight: bold;
@@ -83,6 +84,7 @@
       display: flex;
       justify-content: center;
       padding: 0 10px;
+      -webkit-app-region: no-drag;
       .screen-view{
         background: #fff;
         border-radius: 5px;

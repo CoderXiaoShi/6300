@@ -38,6 +38,7 @@ setInterval(() => {
   flex-direction: row;
   padding: 0 3px;
   justify-content: space-between;
+  -webkit-app-region: drag;
   .right, .left{
     display: flex;
     flex-direction: row;
