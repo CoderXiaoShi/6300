@@ -4,12 +4,8 @@ import process from 'process'
 let mainWindow: BrowserWindow;
 
 app.on('ready', () => {
-  let transparent = true;
-  if (process.platform === 'darwin') {
-    transparent = false
-  }
   mainWindow = new BrowserWindow({
-    transparent,
+    transparent: false,
     // width: 220,
     // height: 520,
     width: 620,
@@ -19,5 +15,5 @@ app.on('ready', () => {
   });
   // mainWindow.loadURL(process.argv[2]);
   mainWindow.loadURL('http://localhost:5173/')
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 });

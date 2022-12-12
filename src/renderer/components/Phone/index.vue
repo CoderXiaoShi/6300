@@ -47,7 +47,7 @@ onMounted(() => {
 const pointerDown = (e: PointerEvent) => {
   e.stopPropagation();
   e.preventDefault();
-  document.body.setPointerCapture(e.pointerId)
+  // document.body.setPointerCapture(e.pointerId)
   const oldStyle = {x: 0, y: 0}
   let transform = phoneDom.value.style.transform
   if (transform) {
@@ -68,7 +68,7 @@ const pointerDown = (e: PointerEvent) => {
   const pointerUp = (e: PointerEvent) => {
     document.removeEventListener('pointermove', pointerMove)
     document.removeEventListener('pointerup', pointerUp)
-    document.body.releasePointerCapture(e.pointerId)
+    // document.body.releasePointerCapture(e.pointerId)
   }
   document.addEventListener('pointermove', pointerMove);
   document.addEventListener('pointerup', pointerUp);

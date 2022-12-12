@@ -80,9 +80,32 @@ watchEffect(() => {
 .body{
   overflow-y: scroll;
 }
+
+::-webkit-scrollbar
+{
+    width:6px;
+    height:6px;
+    background-color:transparent;
+}
+/*定义滚动条轨道
+ 内阴影+圆角*/
+::-webkit-scrollbar-track
+{
+    -webkit-box-shadow:inset 0 0 0px #eee;
+    border-radius:10px;
+    background-color: #666;
+}
+/*定义滑块
+ 内阴影+圆角*/
+::-webkit-scrollbar-thumb
+{
+    border-radius:10px;
+    -webkit-box-shadow:inset 0 0 6px #333;
+    background-color:transparent;
+}
 .table{
   height: 160px;
-  overflow: scroll;
+  overflow-y: overlay;
   .table-item{
     width: calc(160px / 3);
     height: calc(160px / 3);
