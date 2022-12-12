@@ -1,15 +1,23 @@
 <script setup lang="ts">
 import Phone from './components/Phone/index.vue'
+import BottomTools from './components/BottomTools/index.vue'
 </script>
 
 <template>
-  <Phone />
+  <div class="container">
+    <Phone />
+    <BottomTools />
+  </div>
 </template>
 
 <style lang="less" scoped>
 </style>
 
 <style scoped>
+.container{
+  display: flex;
+  flex-direction: column;
+}
 .logo {
   height: 6em;
   padding: 1.5em;

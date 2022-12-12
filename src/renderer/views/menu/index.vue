@@ -47,6 +47,11 @@ watchEffect(() => {
   } else if (i.value < 0) {
     i.value = 0;
   }
+  if (tableDom.value) {
+    console.log(tableDom.value.children[i.value])
+    tableDom.value.children[i.value].scrollIntoView()
+  }
+  // console.log(tableDom.value)
 })
 
 </script>

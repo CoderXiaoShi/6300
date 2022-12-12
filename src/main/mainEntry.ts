@@ -1,18 +1,23 @@
 import { app, BrowserWindow } from 'electron'
+import process from 'process'
 
 let mainWindow: BrowserWindow;
 
 app.on('ready', () => {
+  let transparent = true;
+  if (process.platform === 'darwin') {
+    transparent = false
+  }
   mainWindow = new BrowserWindow({
-    // transparent: true,
+    transparent,
     // width: 220,
     // height: 520,
-    width: 320,
+    width: 620,
     height: 620,
     resizable: false,
     frame: false,
   });
   // mainWindow.loadURL(process.argv[2]);
   mainWindow.loadURL('http://localhost:5173/')
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 });

@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "3544204",
+      "name": "刷新",
+      "font_class": "ico_reset",
+      "unicode": "e666",
+      "unicode_decimal": 58982
+    },
+    {
+      "icon_id": "12661308",
+      "name": "关机",
+      "font_class": "guanji",
+      "unicode": "e667",
+      "unicode_decimal": 58983
+    },
+    {
       "icon_id": "1256479",
       "name": "信号",
       "font_class": "xinhao",

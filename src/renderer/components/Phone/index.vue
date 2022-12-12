@@ -5,6 +5,7 @@ import Screen from './Screen/index.vue'
 import Keyboard from './Keyboard/index.vue'
 import { keyboardStore } from '../../store/keyboard'
 import { KeyboardCode } from '../../constant/enum'
+import Event from '../../utils/eventHub'
 
 const phoneDom = ref()
 
@@ -23,6 +24,10 @@ const keyboardFnMap: any = {
   'ArrowLeft': (direction: 'down' | 'up') => keyboardStoreObj.setKeyStatus(KeyboardCode.ArrowLeft , direction),
   'ArrowRight': (direction: 'down' | 'up') => keyboardStoreObj.setKeyStatus(KeyboardCode.ArrowRight , direction),
 }
+
+Event.on('reset', () => {
+  console.log('reset')
+})
 
 onMounted(() => {
   document.addEventListener('keyup', (e) => {
