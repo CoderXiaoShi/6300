@@ -6,7 +6,7 @@ import BottomTools from './components/BottomTools/index.vue'
 <template>
   <div class="container">
     <Phone />
-    <BottomTools />
+    <!-- <BottomTools /> -->
   </div>
 </template>
 

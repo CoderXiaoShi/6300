@@ -11,7 +11,7 @@ app.on('ready', () => {
     width: 620,
     height: 620,
     resizable: false,
-    frame: false,
+    // frame: false,
   });
   // mainWindow.loadURL(process.argv[2]);
   mainWindow.loadURL('http://localhost:5173/')
