@@ -65,6 +65,7 @@ app.get('/user/register', async (req, res) => {
   }
 })
 
+// 联系人: 增, 删
 app.post('/user/contact', async (req, res) => {
   let result = {
     status: 200,
@@ -74,7 +75,6 @@ app.post('/user/contact', async (req, res) => {
   }
   try {
     const { user, contact, isDelete } = req.body;
-
     const userMap = await hGetAll('users', user);
     let currUser = userMap[user];
     currUser = JSON.parse(currUser);
@@ -89,6 +89,7 @@ app.post('/user/contact', async (req, res) => {
       console.log('新增联系人: ', user, contact);
     }
     await hSet('users', user, currUser);
+    result.data = true;
     res.send(result)
   } catch (error) {
     console.error(error);
@@ -98,7 +99,28 @@ app.post('/user/contact', async (req, res) => {
     res.send(result)
   }
 })
-app.get('/user/contact')
+
+// 查询联系人列表
+app.get('/user/contact', async (req, res) => {
+  const { phone } = req.query;
+  let result = {
+    status: 200,
+    msg: '',
+    data: {},
+    error: null
+  }
+  try {
+    const userMap = await hGetAll('users', phone);
+    if (userMap[phone]) {
+      const user = JSON.parse(userMap[phone]);
+      result.data = user.contacts;
+    }
+    res.send(result)
+  } catch (error) {
+    res.header = 500
+    res.send(result)
+  }
+})
 
 const server = http.createServer(app);
 // const io = new Server(server, {
