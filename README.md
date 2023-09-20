@@ -1,8 +1,8 @@
-# vue3 + electron 实现 诺基亚 6300
+# vue3 + electron 诺基亚 6300
 
 ## Demo
 
-![Demo](./demo.jpeg '第一版效果图')
+![Demo](./static/demo.jpeg '第一版效果图')
 
 > 下个版本
 
