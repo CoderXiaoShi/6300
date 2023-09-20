@@ -78,6 +78,7 @@ const oneToOne = (uid, msg) => {
     console.log(`${uid}, 用户不在线`)
   }
 }
+
 // 通知房间里的所有人
 const oneToRoomMany = async (roomId, msg) => {
   let uMap = await getRoomUser(roomId);
@@ -97,9 +98,9 @@ const onListener = async (s) => {
 
   // 用户登录
   if (roomId) {
-    await hSet(roomKey + roomId, userId, await getUserDataByUid(userId, roomId, nickname, pub))
-    console.log(`roomId: ${roomId}`)
-    oneToRoomMany(roomId, getMsg('join', userId + ' join then room', 200, { userId, nickname }))
+    await hSet(roomKey + roomId, userId, await getUserDataByUid(userId, roomId, nickname, pub));
+    console.log(`roomId: ${roomId}`);
+    oneToRoomMany(roomId, getMsg('join', userId + ' join then room', 200, { userId, nickname }));
   }
 
   // 一个客户端向所在房间的所有人发消息
@@ -110,7 +111,7 @@ const onListener = async (s) => {
   // 客户端断开链接
   s.on('disconnect', async () => {
     console.log(`client uid: ${userId}, roomId ${roomId} ${nickname} offline`);
-    userMap.delete(userId)
+    userMap.delete(userId);
     if (roomId) {
       await hDel(roomKey + roomId, userId);
       oneToRoomMany(roomId, getMsg('leave', `${userId} leave the room `, 200, { userId, nickname }));
@@ -118,9 +119,9 @@ const onListener = async (s) => {
   })
   // 客户端请求 房间的用户列表 
   s.on('roomUserList', async (data = {}) => {
-    let roomId = data['roomId']
+    let roomId = data['roomId'];
     if (roomId) {
-      s.emit('roomUserList', await getRoomOnlyUserList(roomId))
+      s.emit('roomUserList', await getRoomOnlyUserList(roomId));
     }
   })
   // 发起呼叫
@@ -135,30 +136,30 @@ const onListener = async (s) => {
   })
   // 双方交换 候选 链接方式
   s.on('candidate', data => {
-    const targetUid = data['targetUid']
-    const u = userMap.get(targetUid)
+    const targetUid = data['targetUid'];
+    const u = userMap.get(targetUid);
     if (u) {
-      oneToOne(targetUid, getMsg('candidate', 'ice candidate', 200, data))
+      oneToOne(targetUid, getMsg('candidate', 'ice candidate', 200, data));
     } else {
       console.log(targetUid, '不在线')
     }
   })
   // 发送 链接请求
   s.on('offer', data => {
-    const targetUid = data['targetUid']
-    const u = userMap.get(targetUid)
+    const targetUid = data['targetUid'];
+    const u = userMap.get(targetUid);
     if (u) {
-      oneToOne(targetUid, getMsg('offer', 'rtc offer', 200, data))
+      oneToOne(targetUid, getMsg('offer', 'rtc offer', 200, data));
     } else {
       console.log(targetUid, '不在线')
     }
   })
   // 相应 链接请求
   s.on('answer', data => {
-    const targetUid = data['targetUid']
-    const u = userMap.get(targetUid)
+    const targetUid = data['targetUid'];
+    const u = userMap.get(targetUid);
     if (u) {
-      oneToOne(targetUid, getMsg('answer', 'rtc answer', 200, data))
+      oneToOne(targetUid, getMsg('answer', 'rtc answer', 200, data));
     } else {
       console.log(targetUid, '不在线')
     }
