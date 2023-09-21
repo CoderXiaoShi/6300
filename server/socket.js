@@ -39,6 +39,25 @@ const oneToRoomMany = async (roomId, msg) => {
   }
 }
 
+class Room {
+  constructor(id, users) {
+    this.id = id
+    this.users = users
+    this.caller = users[0]
+    this.callee = users[1]
+    this.created()
+  }
+  // 通知所有人 房间创建成功
+  created() {
+    for (const phone of this.users) {
+      const u = userMap.get(phone)
+      if (u) {
+        u.client.emit('roomInfo', this)
+      }
+    }
+  }
+}
+
 /*
   解析参数
   绑定事件
@@ -46,16 +65,14 @@ const oneToRoomMany = async (roomId, msg) => {
 */
 class Sock {
   constructor(s) {
-    this.client = s
-    this.params = this.getParams()
-    this.userId = this.params.userId
-    this.roomId = this.params.roomId
-    this._run()
+    this.client = s;
+    this.params = this.getParams();
+    this.userId = '';
+    this.roomId = '';
+    this._run();
   }
   _run = () => {
-    // 通知房间里所有人
-    this.enterRoom()
-    // this.listen()
+    this.listen();
   }
   enterRoom = async () => {
     if (this.params.roomId) {
@@ -65,10 +82,41 @@ class Sock {
     }
   }
   listen = () => {
+    /*
+      事件分为
+        用户 -> server
+        用户 -> room
+    */
+    // 用户 -> server
+    this.client.on('online', phone => {
+      this.userId = phone;
+      console.log('online ', this.userId);
+      userMap.set(this.userId, this);
+    })
     this.client.on('disconnect', () => {
+      console.log('offline ', this.userId);
       userMap.delete(this.userId);
       const room = roomMap.get(this.roomId);
-      delete room[this.userId];
+      if (room) {
+        delete room[this.userId];
+      }
+    })
+    // 用户 -> room
+    this.client.on('call', ({ phone, targetPhone, offer }) => {
+      console.log('call', phone, targetPhone)
+      // 不在线
+      if (userMap.get(targetPhone) === undefined) {
+        this.client.emit('call_fail', { targetPhone, msg: '不在线' })
+        return
+      }
+      // 在线: 创建 room, 并把 roomId 返回出去
+      const room = new Room(Date.now(), [phone, targetPhone])
+      roomMap.set(room.id, room);
+      userMap.get(targetPhone).client.emit('offer', { offer, formPhone: phone }); // webRtc 呼叫
+    })
+    this.client.on('answer', data => {
+      const { target, answer } = data;
+      userMap.get(target).client.emit('answer', answer)
     })
     /*
       msg
@@ -83,12 +131,12 @@ class Sock {
 
   getParams = () => {
     let obj = {}
-    let query = decodeURI(s.client.request.url.split('?')[1])
-    let vars = query.split('&');
-    for (var i = 0; i < vars.length; i++) {
-      var pair = vars[i].split("=");
-      obj[pair[0]] = pair[1]
-    }
+    // let query = decodeURI(s.client.request.url.split('?')[1])
+    // let vars = query.split('&');
+    // for (var i = 0; i < vars.length; i++) {
+    //   var pair = vars[i].split("=");
+    //   obj[pair[0]] = pair[1]
+    // }
     return obj;
   }
 }
@@ -106,14 +154,15 @@ export default (httpServer) => {
 
   io.on('connection', (sock) => {
     console.log('new sock')
-    let userSock = new Sock(sock)
-    userMap.set(userSock.userId, userSock);
-    const room = roomMap.get(userSock.roomId)
-    if (room) {
-      room[userSock.userId] = userSock.userId;
-    } else {
-      roomMap.set(userSock.roomId, { userId: userSock.userId });
-    }
+    new Sock(sock)
+    // let userSock = new Sock(sock)
+    // userMap.set(userSock.userId, userSock);
+    // const room = roomMap.get(userSock.roomId)
+    // if (room) {
+    //   room[userSock.userId] = userSock.userId;
+    // } else {
+    //   roomMap.set(userSock.roomId, { userId: userSock.userId });
+    // }
   })
 
 }

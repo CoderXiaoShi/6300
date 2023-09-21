@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { reactive } from 'vue'
 import axios from '../app/axios'
+import socketClient from '@/utils/socket'
 
 /*
   注册 user/register 随机返回一个电话号码
@@ -9,6 +10,8 @@ import axios from '../app/axios'
     删
     查
 */
+
+console.log("localStorage['phone']", localStorage['phone'])
 
 export const userStore = defineStore('user', () => {
 
@@ -20,18 +23,17 @@ export const userStore = defineStore('user', () => {
   }
 
   const data = reactive({
-    phone: '',
+    phone: localStorage['phone'],
     contacts
   })
   const register = async () => {
     try {
-      if (localStorage['phone']) {
-        data.phone = localStorage['phone'];
-      } else {
+      if (!data.phone) {
         let user = await axios.get('/user/register');
         data.phone = user.data.data.phone;
         localStorage['phone'] = data.phone;
       }
+      socketClient.emit('online', data.phone)
     } catch (error) {
       console.error(error);
     }
@@ -48,6 +50,8 @@ export const userStore = defineStore('user', () => {
           createAt: Date.now()
         }
       }
+      localStorage['contacts'] = JSON.stringify(data.contacts)
+      console.log('data.contacts', data.contacts)
     } catch (error) {
       console.error('修改联系人失败', error)
     }

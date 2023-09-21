@@ -7,12 +7,12 @@ app.on('ready', () => {
     transparent: false,
     width: 620,
     height: 620,
-    resizable: false,
-
     // frame: false,
     skipTaskbar: false,
-    // minWidth: 650,
+    minWidth: 650,
     center: true,
+    minHeight: 500,
+    // minWidth: 650,
     webPreferences: {
       webSecurity: false,
       webviewTag: true,
@@ -23,6 +23,6 @@ app.on('ready', () => {
       contextIsolation: false,
     },
   });
-  mainWindow.loadURL('http://localhost:5173/')
   mainWindow.webContents.openDevTools()
+  mainWindow.loadURL('http://localhost:5173/')
 });
