@@ -10,6 +10,34 @@ let localPeerRtc: RTCPeerConnection | any = null
     失败
       对方不在线
       空号
+
+
+  const PeerConnection = window.RTCPeerConnection ||
+    window.mozRTCPeerConnection ||
+    window.webkitRTCPeerConnection;
+
+var pc = new PeerConnection()
+
+pc.ontrack = (e) => {
+  console.log('ontrack', e.track)
+  this.setRemoteDomVideoStream('#remotedemo01', e.track);
+}
+pc.onnegotiationneeded = function (e) {
+  console.log("重新协商", e)
+}
+pc.onicecandidate = event => {
+  if (event.candidate) {
+    console.log('candidate: ', event.candidate);
+  } else {
+    console.log('本次协商结束')
+  }
+}
+
+var offer = await pc.createOffer({ iceRestart: true });
+
+await pc.setLocalDescription(offer)
+
+var answer = await pc.createAnswer()
 */
 
 /*

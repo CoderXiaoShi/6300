@@ -6,8 +6,8 @@ import { call } from '@/controller/room'
 // 1. 初始化手机号
 const user = userStore()
 
-user.editContact('15063785123')
-user.editContact('15020555923')
+user.editContact('15060908083')
+user.editContact('15090011936')
 user.editContact('150')
 
 </script>
