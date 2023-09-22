@@ -79,7 +79,11 @@ class Sock {
       userMap.get(target).client.emit('answer', answer)
     })
     this.client.on('candidate', ({ targetPhone, candidate }) => {
-      userMap.get(targetPhone).client.emit('candidate', candidate)
+      if (userMap.get(targetPhone)) {
+        userMap.get(targetPhone).client.emit('candidate', candidate)
+      } else {
+        console.log('用户不在线')
+      }
     })
     /*
       msg

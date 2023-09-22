@@ -1,5 +1,6 @@
 import socketClient from '@/utils/socket'
 import { userStore } from '@/store/user'
+import { chunk } from 'lodash'
 
 let localPeerRtc: RTCPeerConnection | any = null
 
@@ -101,11 +102,84 @@ socketClient.on('candidate', (candidate: any) => {
   }
 })
 
+
+let isInit = false;
+let analyser; // 分析波形节点
+let dataArray; // 存储分析好的对象
+
+const renderCanvas = (newStream) => {
+
+  const cvs = document.querySelector('#canvas')
+  const ctx = cvs.getContext('2d')
+  cvs.width = cvs.width * devicePixelRatio
+  cvs.height = (cvs.height / 2) * devicePixelRatio
+
+  const audioCtx = new AudioContext();
+  // const source = audioCtx.createMediaElementSource(audioDom);
+  const source = audioCtx.createMediaStreamSource(newStream);
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 512;
+  dataArray = new Uint8Array(analyser.frequencyBinCount);
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
+  isInit = true;
+  console.log('dataArray', dataArray);
+  const draw = () => {
+
+    const { width, height } = cvs
+    ctx.clearRect(0, 0, width, height)
+
+    requestAnimationFrame(draw)
+    if (!isInit) {
+      return
+    }
+
+    analyser.getByteFrequencyData(dataArray);
+
+    // 简化音柱: 需要 10 个音柱
+    let num = 10; // 音柱的数量
+    const offset = 2; // 音柱间隙
+    let arr = chunk(dataArray, Math.ceil(dataArray.length / num)).map(arrItem => {
+      let sum = arrItem.reduce((res, item) => {
+        res += item;
+        return res;
+      }, 0);
+      let avg = Math.floor(sum / arrItem.length);
+      return avg;
+    })
+
+    const gradient = ctx.createLinearGradient(0, height, 0, 0)
+
+    // 添加颜色停止点
+    gradient.addColorStop(0, 'rgba(67, 225, 16, 1)');       // 开始处的颜色
+    gradient.addColorStop(0.5, 'rgba(67, 225, 16, .2)');      // 结束处的颜色
+
+    ctx.fillStyle = gradient;
+
+    let barWidth = (width / 2) / num; // 音柱的宽度
+    for (let i = 0; i < arr.length; i++) {
+      const item = arr[i];
+      const barHeight = (item / 255) * height; // 音柱的高度
+      // const barHeight = height; // 音柱的高度
+      const x1 = (width / 2) + (i * barWidth);
+      const x2 = (width / 2) - ((i + 1) * barWidth);
+      const y = height - barHeight;
+
+      ctx.fillRect(x1 + offset, y, barWidth - offset, barHeight);
+      ctx.fillRect(x2 + offset, y, barWidth - offset, barHeight);
+    }
+
+  }
+
+  draw()
+}
+
 const pcEvent = (pc: RTCPeerConnection, targetPhone: string) => {
   pc.ontrack = (e) => {
     let newStream = new MediaStream()
     newStream.addTrack(e.track)
     renderMedia('#remoteVideo', newStream)
+    renderCanvas(newStream)
   }
   pc.onnegotiationneeded = function (e) {
     console.log("开始协商", e)
@@ -155,7 +229,7 @@ export default () => {
     console.log('call')
     localPeerRtc = new window.RTCPeerConnection()
 
-    let localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+    let localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
     for (const track of localStream.getTracks()) {
       localPeerRtc.addTrack(track);
     }
@@ -166,7 +240,6 @@ export default () => {
 
     socketClient.emit('call', { phone: user.data.phone, targetPhone, offer })
   }
-
 
   return {
     call

@@ -7,7 +7,7 @@ import useRoomHooks from '@/hooks/useRoomHooks'
 const user = userStore()
 const roomHook = useRoomHooks()
 
-user.editContact('15011141244')
+user.editContact('15085185173')
 user.editContact('15080720954')
 user.editContact('150')
 
