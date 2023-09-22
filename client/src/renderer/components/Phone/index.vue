@@ -73,7 +73,7 @@ const pointerDown = (e: PointerEvent) => {
   document.addEventListener('pointermove', pointerMove);
   document.addEventListener('pointerup', pointerUp);
 }
-document.addEventListener('pointerdown', pointerDown);
+// document.addEventListener('pointerdown', pointerDown);
 </script>
 
 <template>
