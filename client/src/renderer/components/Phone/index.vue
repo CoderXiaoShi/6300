@@ -3,9 +3,9 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Screen from './Screen/index.vue'
 import Keyboard from './Keyboard/index.vue'
-import { keyboardStore } from '../../store/keyboard'
-import { KeyboardCode } from '../../constant/enum'
-import Event from '../../utils/eventHub'
+import { keyboardStore } from '@/store/keyboard'
+import { KeyboardCode } from '@/constant/enum'
+import Event from '@/utils/eventHub'
 
 const phoneDom = ref()
 
@@ -19,10 +19,10 @@ const toPage = (v: string) => {
 const keyboardFnMap: any = {
   'Enter': () => toPage('/menu'),
   'Escape': () => toPage('/'),
-  'ArrowUp': (direction: 'down' | 'up') => keyboardStoreObj.setKeyStatus(KeyboardCode.ArrowUp ,direction),
-  'ArrowDown': (direction: 'down' | 'up') => keyboardStoreObj.setKeyStatus(KeyboardCode.ArrowDown ,direction),
-  'ArrowLeft': (direction: 'down' | 'up') => keyboardStoreObj.setKeyStatus(KeyboardCode.ArrowLeft , direction),
-  'ArrowRight': (direction: 'down' | 'up') => keyboardStoreObj.setKeyStatus(KeyboardCode.ArrowRight , direction),
+  'ArrowUp': (direction: 'down' | 'up') => keyboardStoreObj.setKeyStatus(KeyboardCode.ArrowUp, direction),
+  'ArrowDown': (direction: 'down' | 'up') => keyboardStoreObj.setKeyStatus(KeyboardCode.ArrowDown, direction),
+  'ArrowLeft': (direction: 'down' | 'up') => keyboardStoreObj.setKeyStatus(KeyboardCode.ArrowLeft, direction),
+  'ArrowRight': (direction: 'down' | 'up') => keyboardStoreObj.setKeyStatus(KeyboardCode.ArrowRight, direction),
 }
 
 Event.on('reset', () => {
@@ -48,7 +48,7 @@ const pointerDown = (e: PointerEvent) => {
   e.stopPropagation();
   e.preventDefault();
   document.body.setPointerCapture(e.pointerId)
-  const oldStyle = {x: 0, y: 0}
+  const oldStyle = { x: 0, y: 0 }
   let transform = phoneDom.value.style.transform
   if (transform) {
     let arr = transform.match(/\d+/g)
@@ -63,7 +63,7 @@ const pointerDown = (e: PointerEvent) => {
   const pointerMove = (e: PointerEvent) => {
     const x = startY - e.clientY; // Y 轴拖动, 翻转 X 轴
     const y = e.clientX - startX; // X 轴拖动, 翻转 Y 轴
-    phoneDom.value.style.transform = 'rotateY('+y+'deg) rotateX('+x+'deg)'
+    phoneDom.value.style.transform = 'rotateY(' + y + 'deg) rotateX(' + x + 'deg)'
   }
   const pointerUp = (e: PointerEvent) => {
     document.removeEventListener('pointermove', pointerMove)

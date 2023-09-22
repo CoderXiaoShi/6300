@@ -6,7 +6,6 @@ import Test from './components/Test.vue'
 
 import { userStore } from './store/user'
 
-// 初始化部分
 // 1. 初始化手机号
 const user = userStore()
 user.register(); // 注册手机号
