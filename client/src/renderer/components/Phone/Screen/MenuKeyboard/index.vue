@@ -39,40 +39,53 @@ const keyStatus = computed(() => {
   <div class="menu-keyboard">
     <!-- {{ keyStatus }} -->
     <div class="col">
-      <div class="menu-btn center btn-box-shadow"><div class="dot blue"></div></div>
-      <div class="menu-btn center btn-box-shadow"><div class="dot green"></div></div>
+      <div class="menu-btn center btn-box-shadow" @click="toPage('/contacts')">
+        <div class="dot blue"></div>
+      </div>
+      <div class="menu-btn center btn-box-shadow">
+        <div class="dot green"></div>
+      </div>
     </div>
     <div class="col">
       <div :class="['direction-keyboard', keyStatus]"></div>
       <div class="enter-keyboard " @click="toPage('/menu')"></div>
     </div>
     <div class="col">
-      <div class="menu-btn center btn-box-shadow"><div class="dot blue"></div></div>
-      <div class="menu-btn center btn-box-shadow" @click="toPage('/')"><div class="dot red"></div></div>
+      <div class="menu-btn center btn-box-shadow">
+        <div class="dot blue"></div>
+      </div>
+      <div class="menu-btn center btn-box-shadow" @click="toPage('/')">
+        <div class="dot red"></div>
+      </div>
     </div>
   </div>
 </template>
 <style lang="less" scoped>
-.menu-keyboard{
+.menu-keyboard {
   height: 60px;
   margin: 0 10px;
   margin-top: 17px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  .top{
+
+  .top {
     border-top: 8px solid #999;
   }
-  .bottom{
+
+  .bottom {
     border-bottom: 8px solid #999;
   }
-  .left{
+
+  .left {
     border-left: 8px solid #999;
   }
-  .right{
+
+  .right {
     border-right: 8px solid #999;
   }
-  .direction-keyboard{
+
+  .direction-keyboard {
     background: linear-gradient(121deg, #f4f4f4 0%, #c4c4c4 100%);
     border-radius: 5px;
     width: 50px;
@@ -80,7 +93,8 @@ const keyStatus = computed(() => {
     box-sizing: border-box;
     position: relative;
   }
-  .enter-keyboard{
+
+  .enter-keyboard {
     background: #000;
     width: 39px;
     height: 39px;
@@ -88,35 +102,50 @@ const keyStatus = computed(() => {
     left: 5px;
     top: 5px;
     border-radius: 5px;
-    &:active{
+
+    &:active {
       transform: scale(.9);
     }
   }
-  .col{
+
+  .col {
     display: flex;
     flex-direction: column;
     position: relative;
     justify-content: space-between;
     height: 50px;
   }
-  .btn-box-shadow{
+
+  .btn-box-shadow {
     box-shadow: 2px 2px 3px #262626, 1px 1px 2px 0px inset #7d7d7d;
-    &:active{
+
+    &:active {
       box-shadow: 0px 0px 3px #262626, 0px 0px 2px 0px inset #7d7d7d;
     }
   }
-  .menu-btn{
+
+  .menu-btn {
     width: 35px;
     height: 17px;
     background: #000;
     border-radius: 3px;
   }
-  .dot{
+
+  .dot {
     width: 6px;
     height: 3px;
   }
-  .blue{ background: blue; }
-  .red{ background: #700202; }
-  .green{ background: #024c02; }
+
+  .blue {
+    background: blue;
+  }
+
+  .red {
+    background: #700202;
+  }
+
+  .green {
+    background: #024c02;
+  }
 }
 </style>

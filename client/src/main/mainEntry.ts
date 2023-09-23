@@ -1,23 +1,28 @@
 import { app, BrowserWindow } from 'electron'
-import process from 'process'
 
 let mainWindow: BrowserWindow;
 
 app.on('ready', () => {
-  let transparent = true;
-  if (process.platform === 'darwin') {
-    transparent = false
-  }
   mainWindow = new BrowserWindow({
-    transparent,
-    // width: 220,
-    // height: 520,
+    transparent: false,
     width: 620,
     height: 620,
-    resizable: false,
-    frame: false,
+    // frame: false,
+    skipTaskbar: false,
+    minWidth: 650,
+    center: true,
+    minHeight: 500,
+    // minWidth: 650,
+    webPreferences: {
+      webSecurity: false,
+      webviewTag: true,
+      spellcheck: false,
+      nodeIntegration: true,
+      allowRunningInsecureContent: true,
+      backgroundThrottling: true, // 提高最小化页面的性能
+      contextIsolation: false,
+    },
   });
-  // mainWindow.loadURL(process.argv[2]);
-  mainWindow.loadURL('http://localhost:5173/')
   mainWindow.webContents.openDevTools()
+  mainWindow.loadURL('http://localhost:5173/')
 });

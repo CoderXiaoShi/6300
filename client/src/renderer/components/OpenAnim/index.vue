@@ -4,8 +4,10 @@ import logo from '../../assets/logo.png';
 import music from '../../assets/start.mp3'
 import { systemStore } from '../../store/system'
 import { SystemStatus } from '../../constant/enum'
+import { useRouter } from 'vue-router'
 
 const store = systemStore()
+const router = useRouter()
 
 onMounted(() => {
   const audio = new Audio()
@@ -14,6 +16,7 @@ onMounted(() => {
   audio.play()
   setTimeout(() => {
     console.log('播放完毕')
+    router.push('/')
     store.changeState(SystemStatus.open)
   }, 4000)
 })

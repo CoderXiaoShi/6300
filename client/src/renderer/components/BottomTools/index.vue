@@ -7,12 +7,12 @@ const reset = () => Event.emit('reset')
 </script>
 <template>
   <div class="bottomTools center">
-    <!-- <i class="iconfont icon-ico_reset" @click.stop="reset" ></i>
-    <i class="iconfont icon-guanji"></i> -->
+    <i class="iconfont icon-ico_reset" @click.stop="reset"></i>
+    <i class="iconfont icon-guanji"></i>
   </div>
 </template>
 <style lang='less' scoped>
-.bottomTools{
+.bottomTools {
   background: #ccc;
   width: 300px;
   height: 30px;
@@ -22,10 +22,12 @@ const reset = () => Event.emit('reset')
   box-shadow: 0 0 10px #ccc;
   -webkit-app-region: drag;
   cursor: move;
-  .iconfont{
+
+  .iconfont {
     cursor: pointer;
     margin-right: 10px;
-    &:hover{
+
+    &:hover {
       color: #666;
       -webkit-app-region: no-drag;
     }

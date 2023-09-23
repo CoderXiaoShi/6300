@@ -1,0 +1,23 @@
+{
+  "name": "03",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node app.js",
+    "test": "electron ./test/test.cjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "console": "^0.7.2",
+    "express": "^4.18.2",
+    "redis": "^3.1.2",
+    "socket.io": "^4.7.2"
+  },
+  "devDependencies": {
+    "electron": "^26.1.0"
+  }
+}
