@@ -17,10 +17,10 @@ import '@/utils/socket'
 
 <template>
   <div class="container">
-    <!-- <h3>test</h3>
+    <h3>test</h3>
     <hr>
-    <Test /> -->
-    <Phone />
+    <Test />
+    <!-- <Phone /> -->
   </div>
 </template>
 
