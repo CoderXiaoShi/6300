@@ -47,11 +47,8 @@ const renderCanvas = (newStream: MediaStream) => {
 
   const cvs: any = document.querySelector('#canvas')
   const ctx: any = cvs.getContext('2d')
-  // cvs.width = cvs.width * devicePixelRatio
-  // cvs.height = (cvs.height / 2) * devicePixelRatio
 
   const audioCtx = new AudioContext();
-  // const source = audioCtx.createMediaElementSource(audioDom);
   const source = audioCtx.createMediaStreamSource(newStream);
   analyser = audioCtx.createAnalyser();
   analyser.fftSize = 512;
@@ -132,14 +129,6 @@ const renderCanvas = (newStream: MediaStream) => {
   p {
     margin-bottom: 15px;
   }
-}
-
-#canvas {
-  // border: 1px solid #000;
-  // top: 0;
-  // left: 0;
-  // position: fixed;
-  // background: #fff;
 }
 
 #remoteVideo {
