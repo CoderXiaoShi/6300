@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import { onMounted, watchEffect, computed } from 'vue';
+import { onMounted, watchEffect, computed, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { keyboardStore } from '../../../../store/keyboard';
-import { KeyboardCode } from '../../../../constant/enum';
+import { KeyboardCode } from '@/constant/enum';
+import EventHub from "@/utils/eventHub";
 
 const router = useRouter();
 const keyboardStoreObj = keyboardStore();
-
-const toPage = (v: string) => {
-  router.push(v)
-}
 
 const keyStatus = computed(() => {
   let status = {
@@ -34,27 +31,55 @@ const keyStatus = computed(() => {
   return className
 })
 
+const keyEvent = (key: string) => {
+  EventHub.emit(key);
+}
+
+const keyboardEvent = () => {
+
+}
+
+// ArrowUp = 'ArrowUp',
+// ArrowDown = 'ArrowDown',
+// ArrowLeft = 'ArrowLeft',
+// ArrowRight = 'ArrowRight',
+
+// ArrowUp
+// ArrowDown
+// ArrowLeft
+// ArrowRight
+document.addEventListener('keydown', (e) => {
+  console.log(e.code)
+  if (e.code === 'Escape') {
+    router.push('/')
+    return
+  }
+  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
+    EventHub.emit(KeyboardCode[e.code]);
+  }
+})
+
 </script>
 <template>
   <div class="menu-keyboard">
     <!-- {{ keyStatus }} -->
     <div class="col">
-      <div class="menu-btn center btn-box-shadow" @click="toPage('/contacts')">
+      <div class="menu-btn center btn-box-shadow" @click="keyEvent(KeyboardCode.btnLeftTop)">
         <div class="dot blue"></div>
       </div>
-      <div class="menu-btn center btn-box-shadow">
+      <div class="menu-btn center btn-box-shadow" @click="keyEvent(KeyboardCode.btnLeftBottom)">
         <div class="dot green"></div>
       </div>
     </div>
     <div class="col">
       <div :class="['direction-keyboard', keyStatus]"></div>
-      <div class="enter-keyboard " @click="toPage('/menu')"></div>
+      <div class="enter-keyboard " @click="keyEvent(KeyboardCode.Enter)"></div>
     </div>
     <div class="col">
-      <div class="menu-btn center btn-box-shadow">
+      <div class="menu-btn center btn-box-shadow" @click="keyEvent(KeyboardCode.btnRightTop)">
         <div class="dot blue"></div>
       </div>
-      <div class="menu-btn center btn-box-shadow" @click="toPage('/')">
+      <div class="menu-btn center btn-box-shadow" @click="keyEvent(KeyboardCode.btnRightBottom)">
         <div class="dot red"></div>
       </div>
     </div>

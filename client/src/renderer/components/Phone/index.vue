@@ -5,7 +5,7 @@ import Screen from './Screen/index.vue'
 import Keyboard from './Keyboard/index.vue'
 import { keyboardStore } from '@/store/keyboard'
 import { KeyboardCode } from '@/constant/enum'
-import Event from '@/utils/eventHub'
+import EventHub from '@/utils/eventHub'
 
 const phoneDom = ref()
 
@@ -25,28 +25,23 @@ const keyboardFnMap: any = {
   'ArrowRight': (direction: 'down' | 'up') => keyboardStoreObj.setKeyStatus(KeyboardCode.ArrowRight, direction),
 }
 
-Event.on('reset', () => {
-  console.log('reset')
+EventHub.on('reset', () => {
+  phoneDom.value.style.transform = 'rotateY(0deg) rotateX(0deg)'
 })
 
-onMounted(() => {
-  document.addEventListener('keyup', (e) => {
-    const { code } = e
-    if (code in keyboardFnMap) {
-      keyboardFnMap[code]('up');
-    }
-  })
-  document.addEventListener('keydown', (e) => {
-    const { code } = e
-    if (code in keyboardFnMap) {
-      keyboardFnMap[code]('down');
-    }
-  })
-})
 
 const pointerDown = (e: PointerEvent) => {
+  const phoneContainer = document.getElementById('phoneContainer')
+  for (const item of Array.from(e.path)) {
+    if (item === phoneContainer) {
+      console.log(e.path)
+      document.body.releasePointerCapture(e.pointerId)
+      return;
+    }
+  }
   e.stopPropagation();
   e.preventDefault();
+  // phoneContainer
   document.body.setPointerCapture(e.pointerId)
   const oldStyle = { x: 0, y: 0 }
   let transform = phoneDom.value.style.transform

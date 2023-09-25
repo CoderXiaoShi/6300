@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import Event from '../../utils/eventHub'
+import EventHub from '@/utils/eventHub'
 
-const reset = () => Event.emit('reset')
+const reset = () => EventHub.emit('reset')
 
 </script>
 <template>
   <div class="bottomTools center">
     <i class="iconfont icon-ico_reset" @click.stop="reset"></i>
-    <i class="iconfont icon-guanji"></i>
+    <!-- <i class="iconfont icon-guanji"></i> -->
   </div>
 </template>
 <style lang='less' scoped>

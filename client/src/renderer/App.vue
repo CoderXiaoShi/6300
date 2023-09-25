@@ -16,19 +16,35 @@ import '@/utils/socket'
 </script>
 
 <template>
-  <div class="container">
-    <h3>test</h3>
-    <hr>
-    <Test />
-    <!-- <Phone /> -->
+  <div class="container" id="phoneContainer">
+
+    <canvas id="canvas" width="300" height="200"></canvas>
+    <video id="remoteVideo" autoplay style="width: 300px; height: 200px;" controls></video>
+    <!-- <Test /> -->
+    <Phone />
+
+
+    <!-- <BottomTools /> -->
   </div>
 </template>
 
-<style lang="less" scoped></style>
-
 <style scoped>
+#canvas {
+  position: fixed;
+  border: 1px solid #000;
+  top: 0;
+  left: 0;
+}
+</style>
+
+<style >
+#app {
+  cursor: move;
+}
+
 .container {
   display: flex;
+  cursor: default;
   flex-direction: column;
 }
 

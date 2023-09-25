@@ -32,6 +32,7 @@ export const userStore = defineStore('user', () => {
         let user = await axios.get('/user/register');
         data.phone = user.data.data.phone;
         localStorage['phone'] = data.phone;
+        editContact({ phone: data.phone, name: '本机号', isSelf: true })
       }
       socketClient.emit('online', data.phone)
     } catch (error) {
@@ -40,13 +41,15 @@ export const userStore = defineStore('user', () => {
   }
 
   // 添加 | 删除联系人
-  const editContact = async (phone: string, isDelete: boolean = false) => {
+  const editContact = async ({ phone, name, isSelf }: any, isDelete: boolean = false) => {
     try {
       if (isDelete) {
         delete data.contacts[phone];
       } else {
         data.contacts[phone] = {
           phone,
+          name,
+          isSelf,
           createAt: Date.now()
         }
       }
@@ -59,6 +62,6 @@ export const userStore = defineStore('user', () => {
   return {
     data,
     register,
-    editContact
+    editContact,
   }
 })

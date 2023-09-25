@@ -10,13 +10,6 @@ app.use(express.json());
 /*
   注册
   user/register 随机返回一个电话号码
-  联系人
-    增
-      user, friend
-    删
-      user, friend
-    查
-      user
 */
 app.get('/user/register', async (req, res) => {
   let result = {
