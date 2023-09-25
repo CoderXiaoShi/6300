@@ -1,7 +1,8 @@
-import { useRouter } from 'vue-router'
 import socketClient from '@/utils/socket'
 import { userStore } from '@/store/user'
 import EventHub from '@/utils/eventHub'
+import { systemStore } from '@/store/system'
+import { CallStatus } from '@/constant/enum'
 
 let localPeerRtc: RTCPeerConnection | any = null
 
@@ -101,8 +102,9 @@ socketClient.on('candidate', (candidate: any) => {
 
 const pcEvent = (pc: RTCPeerConnection, targetPhone: string) => {
   pc.ontrack = (e) => {
-    let newStream = new MediaStream()
-    newStream.addTrack(e.track)
+    let newStream = new MediaStream();
+    newStream.addTrack(e.track);
+    console.log('onTrack', e.track);
     // renderMedia('#remoteVideo', newStream)
     // renderCanvas(newStream)
     EventHub.emit('call_success', {
@@ -134,7 +136,7 @@ socketClient.on('answer', async (answer: any) => {
 // 2. B 响应 A
 socketClient.on('offer', async ({ offer, formPhone }: any) => {
   console.log('offer', offer, formPhone)
-  router.push('/call')
+  store.changeCallStatus(CallStatus.callIng)
   localPeerRtc = new window.RTCPeerConnection()
 
   isRTCConnect = true
@@ -151,13 +153,12 @@ socketClient.on('offer', async ({ offer, formPhone }: any) => {
 
 })
 
-let router
+let store: any
 
 export default () => {
   const user = userStore()
 
-  router = useRouter()
-  console.log('router', router)
+  store = systemStore()
 
   // 1. A 呼叫 B
   const call = async (targetPhone: string) => {
@@ -173,7 +174,7 @@ export default () => {
     const offer = await localPeerRtc.createOffer({ iceRestart: true });
     localPeerRtc.setLocalDescription(offer)
 
-    router.push('/call');
+    store.changeCallStatus(CallStatus.callIng)
     socketClient.emit('call', { phone: user.data.phone, targetPhone, offer })
   }
 

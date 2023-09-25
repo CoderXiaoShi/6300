@@ -1,26 +1,24 @@
 <script setup lang="ts">
 import { chunk } from 'lodash';
-import { computed, onMounted, onUnmounted, reactive, watchEffect } from 'vue'
-import { userStore } from '@/store/user';
+import { onUnmounted, reactive } from 'vue'
 import Header from '@/components/Phone/Header/index.vue'
 import EventHub from "@/utils/eventHub";
-import { KeyboardCode } from '@/constant/enum';
 import useRoomHooks from '@/hooks/useRoomHooks';
+
+const roomHook = useRoomHooks()
 
 const state = reactive({
   targetPhone: '',
 })
 
-const renderCallStatus = ({ targetPhone, newStream }) => {
-
+const renderCallStatus = ({ targetPhone, newStream }: any) => {
+  console.log('renderCallStatus')
   state.targetPhone = targetPhone
   renderMedia('#remoteVideo', newStream)
   renderCanvas(newStream)
 }
 
-onMounted(() => {
-  EventHub.on('call_success', renderCallStatus)
-})
+EventHub.on('call_success', renderCallStatus)
 
 onUnmounted(() => {
   EventHub.off('call_success', renderCallStatus)
@@ -49,8 +47,8 @@ const renderCanvas = (newStream: MediaStream) => {
 
   const cvs: any = document.querySelector('#canvas')
   const ctx: any = cvs.getContext('2d')
-  cvs.width = cvs.width * devicePixelRatio
-  cvs.height = (cvs.height / 2) * devicePixelRatio
+  // cvs.width = cvs.width * devicePixelRatio
+  // cvs.height = (cvs.height / 2) * devicePixelRatio
 
   const audioCtx = new AudioContext();
   // const source = audioCtx.createMediaElementSource(audioDom);

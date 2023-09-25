@@ -2,7 +2,7 @@
 import { userStore } from '@/store/user';
 import { useRouter } from 'vue-router'
 import { computed, onMounted, onUnmounted, reactive, watchEffect } from 'vue'
-import Header from '../../components/Phone/Header/index.vue'
+import Header from '@/components/Phone/Header/index.vue'
 import EventHub from "@/utils/eventHub";
 import { KeyboardCode } from '@/constant/enum';
 import useRoomHooks from '@/hooks/useRoomHooks'

@@ -7,6 +7,13 @@ export enum SystemStatus {
   close
 }
 
+export enum CallStatus {
+  Start,
+  callIng,
+  Success,
+  Close
+}
+
 // 系统 keyCode
 export enum KeyboardCode {
   key0 = 0,
