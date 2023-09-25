@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Phone from './components/Phone/index.vue'
 import BottomTools from './components/BottomTools/index.vue'
-
 import Test from './components/Test.vue'
 
 import { userStore } from './store/user'
@@ -18,11 +17,8 @@ import '@/utils/socket'
 <template>
   <div class="container" id="phoneContainer">
 
-    <canvas id="canvas" width="300" height="200"></canvas>
-    <video id="remoteVideo" autoplay style="width: 300px; height: 200px;" controls></video>
     <!-- <Test /> -->
     <Phone />
-
 
     <!-- <BottomTools /> -->
   </div>

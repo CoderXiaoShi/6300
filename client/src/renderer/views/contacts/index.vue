@@ -67,6 +67,7 @@ const call = () => {
   console.log(u, state.active)
   if (!u.isSelf) {
     roomHook.call(state.active)
+    // router.push('/call')
   } else {
     console.log('不能向自己拨号')
   }

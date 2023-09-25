@@ -6,6 +6,7 @@ import Keyboard from './Keyboard/index.vue'
 import { keyboardStore } from '@/store/keyboard'
 import { KeyboardCode } from '@/constant/enum'
 import EventHub from '@/utils/eventHub'
+import useRoomHooks from '@/hooks/useRoomHooks'
 
 const phoneDom = ref()
 

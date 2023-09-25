@@ -1,6 +1,7 @@
+import { useRouter } from 'vue-router'
 import socketClient from '@/utils/socket'
 import { userStore } from '@/store/user'
-import { chunk } from 'lodash'
+import EventHub from '@/utils/eventHub'
 
 let localPeerRtc: RTCPeerConnection | any = null
 
@@ -16,13 +17,17 @@ let localPeerRtc: RTCPeerConnection | any = null
   接听建立 rtc 连接
   建立 语音通话
 
-
   call 流程
-    1. 呼叫
-    2. 创建房间
-    3. socket 将房间同步到 另一个人
+    1. 呼叫者 call 被呼叫者                                 call_ing
+    2. 创建房间                              
+    3. socket 将房间同步到 被呼叫者
     3. 创建 peerConnection, 并设置 offer
-    4. 将 offer 发给 房间里的另一个人
+    4. 将 offer 发给 被呼叫者
+    5. 被呼叫者 接受到 offer 并 setRemoteDescription
+    6. 被呼叫者 创建 answer 并 setLocalDescription
+    7. 被呼叫者 将 answer 发送给 呼叫者
+    8. 呼叫者 接受到 answer 并 setRemoteDescription
+    9. 此时双方 在 ontrack 事件中可以接收到 媒体流            call_success
 
   数据
     房间人数
@@ -78,16 +83,6 @@ socketClient.on('roomInfo', (data: any) => {
   console.log('roomInfo', room)
 })
 
-const renderMedia = (domId: any, newStream: any) => {
-  let videoDom = document.querySelector(domId)
-  let stream = videoDom.srcObject;
-  if (stream) {
-    stream.getAudioTracks().forEach((e: any) => stream.removeTrack(e));
-    stream.getVideoTracks().forEach((e: any) => stream.removeTrack(e));
-  }
-  videoDom.srcObject = newStream;
-}
-
 socketClient.on('candidate', (candidate: any) => {
   if (isRTCConnect) {
     if (candidateList.length) {
@@ -103,83 +98,18 @@ socketClient.on('candidate', (candidate: any) => {
 })
 
 
-let isInit = false;
-let analyser; // 分析波形节点
-let dataArray; // 存储分析好的对象
-
-const renderCanvas = (newStream) => {
-
-  const cvs = document.querySelector('#canvas')
-  const ctx = cvs.getContext('2d')
-  cvs.width = cvs.width * devicePixelRatio
-  cvs.height = (cvs.height / 2) * devicePixelRatio
-
-  const audioCtx = new AudioContext();
-  // const source = audioCtx.createMediaElementSource(audioDom);
-  const source = audioCtx.createMediaStreamSource(newStream);
-  analyser = audioCtx.createAnalyser();
-  analyser.fftSize = 512;
-  dataArray = new Uint8Array(analyser.frequencyBinCount);
-  source.connect(analyser);
-  analyser.connect(audioCtx.destination);
-  isInit = true;
-  console.log('dataArray', dataArray);
-  const draw = () => {
-
-    const { width, height } = cvs
-    ctx.clearRect(0, 0, width, height)
-
-    requestAnimationFrame(draw)
-    if (!isInit) {
-      return
-    }
-
-    analyser.getByteFrequencyData(dataArray);
-
-    // 简化音柱: 需要 10 个音柱
-    let num = 10; // 音柱的数量
-    const offset = 2; // 音柱间隙
-    let arr = chunk(dataArray, Math.ceil(dataArray.length / num)).map(arrItem => {
-      let sum = arrItem.reduce((res, item) => {
-        res += item;
-        return res;
-      }, 0);
-      let avg = Math.floor(sum / arrItem.length);
-      return avg;
-    })
-
-    const gradient = ctx.createLinearGradient(0, height, 0, 0)
-
-    // 添加颜色停止点
-    gradient.addColorStop(0, 'rgba(67, 225, 16, 1)');       // 开始处的颜色
-    gradient.addColorStop(0.5, 'rgba(67, 225, 16, .2)');      // 结束处的颜色
-
-    ctx.fillStyle = gradient;
-
-    let barWidth = (width / 2) / num; // 音柱的宽度
-    for (let i = 0; i < arr.length; i++) {
-      const item = arr[i];
-      const barHeight = (item / 255) * height; // 音柱的高度
-      // const barHeight = height; // 音柱的高度
-      const x1 = (width / 2) + (i * barWidth);
-      const x2 = (width / 2) - ((i + 1) * barWidth);
-      const y = height - barHeight;
-
-      ctx.fillRect(x1 + offset, y, barWidth - offset, barHeight);
-      ctx.fillRect(x2 + offset, y, barWidth - offset, barHeight);
-    }
-
-  }
-
-  draw()
-}
 
 const pcEvent = (pc: RTCPeerConnection, targetPhone: string) => {
   pc.ontrack = (e) => {
     let newStream = new MediaStream()
     newStream.addTrack(e.track)
-    renderMedia('#remoteVideo', newStream)
-    renderCanvas(newStream)
+    // renderMedia('#remoteVideo', newStream)
+    // renderCanvas(newStream)
+    EventHub.emit('call_success', {
+      targetPhone,
+      newStream
+    })
+
   }
   pc.onnegotiationneeded = function (e) {
     console.log("开始协商", e)
@@ -204,6 +134,7 @@ socketClient.on('answer', async (answer: any) => {
 // 2. B 响应 A
 socketClient.on('offer', async ({ offer, formPhone }: any) => {
   console.log('offer', offer, formPhone)
+  router.push('/call')
   localPeerRtc = new window.RTCPeerConnection()
 
   isRTCConnect = true
@@ -212,7 +143,6 @@ socketClient.on('offer', async ({ offer, formPhone }: any) => {
   // for (const track of localStream.getTracks()) {
   //   localPeerRtc.addTrack(track);
   // }
-
   pcEvent(localPeerRtc, formPhone)
   localPeerRtc.setRemoteDescription(offer)
   const answer = await localPeerRtc.createAnswer();
@@ -221,15 +151,20 @@ socketClient.on('offer', async ({ offer, formPhone }: any) => {
 
 })
 
+let router
+
 export default () => {
   const user = userStore()
+
+  router = useRouter()
+  console.log('router', router)
 
   // 1. A 呼叫 B
   const call = async (targetPhone: string) => {
     console.log('call')
     localPeerRtc = new window.RTCPeerConnection()
 
-    let localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+    let localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
     for (const track of localStream.getTracks()) {
       localPeerRtc.addTrack(track);
     }
@@ -238,6 +173,7 @@ export default () => {
     const offer = await localPeerRtc.createOffer({ iceRestart: true });
     localPeerRtc.setLocalDescription(offer)
 
+    router.push('/call');
     socketClient.emit('call', { phone: user.data.phone, targetPhone, offer })
   }
 

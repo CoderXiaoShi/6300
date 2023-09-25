@@ -72,6 +72,7 @@ class Sock {
       // 在线: 创建 room, 并把 roomId 返回出去
       const room = new Room(Date.now(), [phone, targetPhone])
       roomMap.set(room.id, room);
+      console.log('call - > offer:  webRtc 呼叫')
       userMap.get(targetPhone).client.emit('offer', { offer, formPhone: phone }); // webRtc 呼叫
     })
     this.client.on('answer', data => {
