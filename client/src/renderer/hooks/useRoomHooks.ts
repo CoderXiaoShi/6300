@@ -149,6 +149,7 @@ socketClient.on('offer', async ({ offer, formPhone }: any) => {
   const answer = await localPeerRtc.createAnswer();
   localPeerRtc.setLocalDescription(answer);
   socketClient.emit('answer', { target: formPhone, answer })
+  isRTCConnect = true
 
   isRTCConnect = true
 })
