@@ -139,18 +139,18 @@ socketClient.on('offer', async ({ offer, formPhone }: any) => {
   store.changeCallStatus(CallStatus.callIng)
   localPeerRtc = new window.RTCPeerConnection()
 
-  isRTCConnect = true
 
-  // let localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-  // for (const track of localStream.getTracks()) {
-  //   localPeerRtc.addTrack(track);
-  // }
+  let localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  for (const track of localStream.getTracks()) {
+    localPeerRtc.addTrack(track);
+  }
   pcEvent(localPeerRtc, formPhone)
   localPeerRtc.setRemoteDescription(offer)
   const answer = await localPeerRtc.createAnswer();
   localPeerRtc.setLocalDescription(answer);
   socketClient.emit('answer', { target: formPhone, answer })
 
+  isRTCConnect = true
 })
 
 let store: any
@@ -173,9 +173,11 @@ export default () => {
     pcEvent(localPeerRtc, targetPhone)
     const offer = await localPeerRtc.createOffer({ iceRestart: true });
     localPeerRtc.setLocalDescription(offer)
+    socketClient.emit('call', { phone: user.data.phone, targetPhone, offer })
 
     store.changeCallStatus(CallStatus.callIng)
-    socketClient.emit('call', { phone: user.data.phone, targetPhone, offer })
+
+    isRTCConnect = true
   }
 
   return {

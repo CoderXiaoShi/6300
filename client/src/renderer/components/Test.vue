@@ -7,9 +7,9 @@ import useRoomHooks from '@/hooks/useRoomHooks'
 const user = userStore()
 const roomHook = useRoomHooks()
 
-user.editContact({ phone: '15073235172' })
-user.editContact({ phone: '15030877211' })
-user.editContact({ phone: '150' })
+// user.editContact({ phone: '15073235172' })
+// user.editContact({ phone: '15030877211' })
+// user.editContact({ phone: '150' })
 
 </script>
 <template>
