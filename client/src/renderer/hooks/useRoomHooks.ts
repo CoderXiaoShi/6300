@@ -85,6 +85,7 @@ socketClient.on('roomInfo', (data: any) => {
 })
 
 socketClient.on('candidate', (candidate: any) => {
+  console.log('socket candidate', candidate)
   if (isRTCConnect) {
     if (candidateList.length) {
       for (const ice of candidateList) {
@@ -139,7 +140,6 @@ socketClient.on('offer', async ({ offer, formPhone }: any) => {
   store.changeCallStatus(CallStatus.callIng)
   localPeerRtc = new window.RTCPeerConnection()
 
-
   let localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
   for (const track of localStream.getTracks()) {
     localPeerRtc.addTrack(track);
@@ -164,6 +164,7 @@ export default () => {
   // 1. A 呼叫 B
   const call = async (targetPhone: string) => {
     console.log('call')
+    store.changeCallStatus(CallStatus.callIng)
     localPeerRtc = new window.RTCPeerConnection()
 
     let localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -172,11 +173,9 @@ export default () => {
     }
 
     pcEvent(localPeerRtc, targetPhone)
-    const offer = await localPeerRtc.createOffer({ iceRestart: true });
+    const offer = await localPeerRtc.createOffer();
     localPeerRtc.setLocalDescription(offer)
     socketClient.emit('call', { phone: user.data.phone, targetPhone, offer })
-
-    store.changeCallStatus(CallStatus.callIng)
 
     isRTCConnect = true
   }
