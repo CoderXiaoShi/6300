@@ -68,6 +68,7 @@ const renderCanvas = (newStream: MediaStream) => {
     }
 
     analyser.getByteFrequencyData(dataArray);
+    console.log('dataArray ----', dataArray);
 
     // 简化音柱: 需要 10 个音柱
     let num = 10; // 音柱的数量

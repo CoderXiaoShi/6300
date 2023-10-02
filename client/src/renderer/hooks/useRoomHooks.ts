@@ -106,13 +106,10 @@ const pcEvent = (pc: RTCPeerConnection, targetPhone: string) => {
     let newStream = new MediaStream();
     newStream.addTrack(e.track);
     console.log('onTrack', e.track);
-    // renderMedia('#remoteVideo', newStream)
-    // renderCanvas(newStream)
     EventHub.emit('call_success', {
       targetPhone,
       newStream
     })
-
   }
   pc.onnegotiationneeded = function (e) {
     console.log("开始协商", e)
